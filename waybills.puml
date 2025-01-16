@@ -1,0 +1,36 @@
+@startuml Waybills
+package MyWaybills {
+    class MyWaybillsPage << (W, LightBlue) >>
+    class MyWaybillsBloc << (S, Orange) >>
+}
+
+
+package WaybillsPackage {
+    interface WaybillsRepository
+    class WaybillsRepositoryImpl
+    class WaybillsResult
+    class WaybillsResult$Success
+    class WaybillsResult$Failure
+    class WaybillEntity
+    class WaybillConverter
+}
+
+package MrmsGraphQL {}
+
+MyWaybillsBloc -- MyWaybillsPage
+MyWaybillsBloc - WaybillsRepository
+MyWaybillsBloc - WaybillEntity
+
+WaybillsResult -- WaybillsResult$Success
+WaybillsResult -- WaybillsResult$Failure
+WaybillsResult$Success -- WaybillEntity
+
+WaybillEntity - WaybillConverter
+WaybillConverter - MrmsGraphQL
+
+WaybillsRepository -- WaybillsResult
+WaybillsRepositoryImpl -- WaybillsResult
+
+WaybillsRepositoryImpl -- MrmsGraphQL
+
+@enduml
