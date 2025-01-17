@@ -1,0 +1,76 @@
+@startuml Grand Structure
+
+title Внутренний дизайн приложения mRMS V2 (27.12.2024)
+package RMS as "mRMS" {
+    frame appCore as "App Core" #LightYellow {
+        folder Initialization
+        folder Router
+        folder Runners
+    }
+    frame Navigation #AliceBlue {
+        artifact HomePage
+        artifact CurrentTaskPage
+        artifact ProfilePage
+        artifact SomePage as "..."
+    }
+
+    Runners --> Initialization
+    Initialization --> Router
+
+    HomePage --> CurrentTaskPage
+    HomePage --> ProfilePage
+    HomePage --> SomePage
+}
+
+package commons as "Общие модули" #LightCyan {
+    package Auth as "Авторизация"
+    package Notifications as "Уведомления"
+    package Comments as "Коментарии"
+    package Waybills as "Путевые листы"
+}
+
+package features as "Функциональные модули" #LightCyan {
+    package CurrentTask as "Текущая задача"
+    package ShiftTasks as "Задачи на смену"
+    package FollowMe as "Follow-me"
+    package Dousing as "Задачи на облив"
+    package MyWaybills as "Мой путевой лист"
+    package FindWaybills as "Найти путевой лист"
+}
+
+package helpers as "Служебные пакеты" #LightCyan {
+    package UIKit as "UI Kit"
+    package graphQL as "Клиент GraphQL"
+    package Storage as "Хранилище данных"
+}
+
+Navigation -[hidden]down- CurrentTask
+Dousing -[hidden]down- Notifications
+Notifications -[hidden]down- UIKit
+
+note as N1
+<b>AppCore</b> -  конфигурации вариантов сборок, инициализация общих зависимостей, роутера, локализации и пр.
+
+<b>Navigation</b> - после инициализации апп показывает корневую
+страницу. После этого, проверка - какая роль у текущего пользователя. 
+В зависимости от роли - построение необходимого основного меню для
+навигации между разделами.
+end note
+
+note right of features
+Набор модулей, каждый из которых поставляет пользователю
+определенный функционал в зависимости от его роли
+end note
+
+note right of commons
+Набор модулей, которые реализуют базовые фичи mRMS и могут
+быть использованы в функциональных модулях.
+end note
+
+note left of helpers
+Набор модулей, которые можно отнести к ядру приложения, но 
+вынесены в отдельные пакеты, чтобы их можно было использовать
+в других проектах без необходимости дублирования кода.
+end note
+
+@enduml

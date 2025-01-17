@@ -1,4 +1,6 @@
 @startuml Waybills
+
+title Внутренний дизайн модуля "Путевой лист"
 package MyWaybills {
     class MyWaybillsPage << (W, LightBlue) >>
     class MyWaybillsBloc << (S, Orange) >>
